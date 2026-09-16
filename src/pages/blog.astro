@@ -1,7 +1,9 @@
 ---
+import { getCollection } from "astro:content"
 import BaseLayout from '../layouts/BaseLayout.astro';
 import BlogPost from '../components/BlogPost.astro';
-const allPosts = Object.values(import.meta.glob('./posts/*.md', { eager: true }));
+
+const allPosts = await getCollection("blog");
 // Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
 // Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
 const pageTitle = "My Astro Learning Blog";
@@ -14,6 +16,6 @@ const pageTitle = "My Astro Learning Blog";
 	<p>Welcome to my blog! Here, I'll share my thoughts and updates as I work through the Astro tutorial.</p>
 
 	<ul>
-		{allPosts.map((post : any) => <BlogPost url={post.url} title={post.frontmatter.title} />)}
+		{allPosts.map((post : any) => <BlogPost url={`/posts/${post.id}/`} title={post.data.title} />)}
 	</ul>
 </BaseLayout>
